@@ -3,6 +3,7 @@ import FeedbackOptions from './components/FeedbackOptions.jsx';
 import Notification from './components/Notification.jsx';
 import Section from './components/Section.jsx';
 import Statistics from './components/Statistics.jsx';
+import FeedbackContext from './context/FeedbackContext.jsx';
 import usePageTitle from './hooks/usePageTitle.js';
 
 const options = ['good', 'neutral', 'bad'];
@@ -35,27 +36,22 @@ function App() {
   };
 
   return (
-    <main>
-      <Section title="Залиште відгук">
-        <FeedbackOptions
-          options={options}
-          onLeaveFeedback={leaveFeedback}
-        />
-      </Section>
-      <Section title="Статистика">
-        {total > 0 ? (
-          <Statistics
-            good={feedback.good}
-            neutral={feedback.neutral}
-            bad={feedback.bad}
-            total={total}
-            positivePercentage={positivePercentage}
-          />
-        ) : (
-          <Notification message="Наразі відгуків немає" />
-        )}
-      </Section>
-    </main>
+    <FeedbackContext.Provider
+      value={{ options, feedback, leaveFeedback, total, positivePercentage }}
+    >
+      <main>
+        <Section title="Залиште відгук">
+          <FeedbackOptions />
+        </Section>
+        <Section title="Статистика">
+          {total > 0 ? (
+            <Statistics />
+          ) : (
+            <Notification message="Наразі відгуків немає" />
+          )}
+        </Section>
+      </main>
+    </FeedbackContext.Provider>
   );
 }
 

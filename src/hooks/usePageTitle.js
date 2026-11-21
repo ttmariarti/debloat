@@ -1,15 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 function usePageTitle(totalFeedback) {
+  const originalTitle = useRef(document.title);
+
   useEffect(() => {
-    const previousTitle = document.title;
     document.title =
       totalFeedback > 0
         ? `Expresso — Відгуки (${totalFeedback})`
         : 'Expresso — Відгуки';
 
     return () => {
-      document.title = previousTitle;
+      document.title = originalTitle.current;
     };
   }, [totalFeedback]);
 }
